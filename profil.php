@@ -25,46 +25,42 @@ if (($_SESSION['userID'] != "")) {
 
     ?>
   <div class="content">
-    <div class="content-albums">
+    <div class="content-profil">
         <?php
-        $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, album.ocena, album.ilosc_ocen, wykonawca.nazwa,
+        $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, wykonawca.nazwa,
                     wytwornia.nazwa
             FROM album_wykonawca
 		JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 		JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
     JOIN wytwornia ON album.id_wytworni=wytwornia.id_wytworni
     JOIN ulubione ON album.id_albumu=ulubione.id_albumu WHERE ulubione.id_uzytkownika=$current_user_id
-        	ORDER BY album.ocena DESC";
+        	ORDER BY album.nazwa DESC";
 
         $result = pg_query($db, $query);
         $row = pg_fetch_assoc($result);
         if (!$row) {
-            echo "Dodaj jakies albumy byczque";
+            echo "<h3>Nie dodałeś jeszcze żadnych albumów</h3>";
         } else {
+
+
+            echo '<div class="row">';
             $result = pg_query($db, $query);
             while ($row = pg_fetch_row($result)) { ?>
-              <div class="album-info">
-                  <?php
-                  echo "<h2>$row[6] \"$row[1]\"</h2><h4>$row[7], $row[2]</h4>"; ?>
-                  <?php
-                  echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'></a>";
-                  ?>
+              <div class="profil-album col s12 m6 l3">
+                <div class="album-info">
+                    <?php
+                    echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'></a>"; ?>
+                    <?php
+
+                    echo "<h5>$row[4] \"$row[1]\"</h5><h6>$row[5], $row[2]</h6>";
+                    ?>
 
 
-              </div>
-              <div class="bottom">
-                <p>
-                    <?php
-                    $query = "SELECT ROUND(AVG(ocena),1) FROM ocena WHERE id_albumu = $row[0]";      //średnia ocena
-                    $average_rating = pg_fetch_row(pg_query($db, $query));
-                    echo $average_rating[0] ?>/5<br>
-                    <?php
-                    $query = "SELECT COUNT(*) FROM ocena WHERE id_albumu =  $row[0]";
-                    $num_of_votes = pg_fetch_row(pg_query($db, $query));
-                    echo $num_of_votes[0] ?> głosów </p>
+                </div>
               </div>
                 <?php
             }
+            echo '<div class="row">';
         }
         } ?>
 

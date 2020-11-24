@@ -32,11 +32,13 @@ if (isset($_POST['save'])) {
     pg_close($db);
 }
 if (isset($_POST['add'])) {
+    echo "erer";
     include('server.php');
     if (($_SESSION['userID'] != "")) {
+
         $result = pg_query($db, "SELECT id_ulubione FROM ulubione ORDER BY id_ulubione DESC LIMIT 1");
         $id_ulubione = pg_fetch_row($result);
-        $query = "INSERT INTO ulubione (id_ulubione, id_uzytkownika, id_albumu)
+        $query = "INSERT INTO ulubione (id_ulubione,id_uzytkownika, id_albumu)
                 VALUES ($id_ulubione[0]+1,'$current_user_id','$current_album_id')";
 
         $result = pg_query($db, $query);
@@ -114,11 +116,11 @@ while ($row = pg_fetch_row($result)) {
 }
 $query = "SELECT * FROM ulubione WHERE id_albumu = $current_album_id AND id_uzytkownika = $current_user_id";
 $result = pg_query($db, $query);
-$voted = pg_fetch_assoc($result);
+$added_fav = pg_fetch_assoc($result);
 
 $query = "SELECT album.id_albumu, album.nazwa, album.premiera, album.okladka, album.liczba_piosenek,
             piosenka.tytul,piosenka.dlugosc,piosenka.nr_piosenki,
-            wytwornia.nazwa, piosenka.kompozytor, piosenka.mix, piosenka.id_piosenki, album.ocena, album.ilosc_ocen FROM album
+            wytwornia.nazwa, piosenka.kompozytor, piosenka.mix, piosenka.id_piosenki FROM album
             JOIN piosenka ON album.id_albumu=piosenka.id_albumu
             JOIN wytwornia on album.id_wytworni=wytwornia.id_wytworni
             WHERE album.id_albumu=$current_album_id
@@ -132,10 +134,10 @@ $album = pg_fetch_row($result);
     <div class="row album-info">
       <div>
         <h1> <?php echo $album[1]; ?>
-            <?php if ($voted) { ?>
-              <a class="btn-floating btn-large waves-effect waves-light orange remove_favourite">-</a>
+            <?php if ($added_fav) { ?>
+              <a class="btn-floating btn-large waves-effect waves-light remove_favourite">-</a>
             <?php } else { ?>
-          <a class="btn-floating btn-large waves-effect waves-light orange add_favourite">+</a>
+          <a class="btn-floating btn-large waves-effect waves-light add_favourite">+</a>
           <?php } ?>
         </h1>
       </div>
