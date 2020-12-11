@@ -129,8 +129,7 @@ $result = pg_query($db, $query);
 $album = pg_fetch_row($result);
 
 ?>
-<div class="content">
-  <div class="content-album">
+<div class="container center">
     <div class="row album-info">
       <div>
         <h1> <?php echo $album[1]; ?>
@@ -140,7 +139,7 @@ $album = pg_fetch_row($result);
           <a class="btn-floating btn-large waves-effect waves-light add_favourite">+</a>
           <?php } ?>
         </h1>
-      </div>
+
       <h5>
           <?php
           foreach ($album_artists as $album_artist) {
@@ -149,6 +148,7 @@ $album = pg_fetch_row($result);
           }
           echo '</h5>';
           ?>
+      </div>
         <div class="col s12 l5 left">
 
             <?php echo "<img src=" . $album[3] . " alt=" . $album[1] . " class='cover'>";
@@ -253,7 +253,7 @@ $album = pg_fetch_row($result);
           $num_of_votes = pg_fetch_row(pg_query($db, $query));
           echo $num_of_votes[0] ?> głosów </p>
     </div>
-  </div>
+</div>
     <?php
     pg_close($db);
     include('footer.php');

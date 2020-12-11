@@ -139,22 +139,10 @@ header {
 }
 
 .content-albums,.content-album {
-	text-align: center;
-	width:38%;
+
 	padding-top:100px;
 	margin:0 auto;
 
-}
-.content-album {
-	width:85%;
-}
-@media only screen and (max-width: 600px) {
-	.content-albums {
-		width:100%;
-	}
-	.content-album {
-		width:100%;
-	}
 }
 
 
@@ -170,15 +158,16 @@ header {
 	padding:10px 0 10px;
 }
 
-.content {
-	width:100%;
-	padding:7px;
-	padding-top:100px;
-	text-align: center;
-}
 .collapsible-header {
 	font-size: 16px;
 	font-weight: 700;
+}
+.container{
+	padding-top:100px;
+	text-align: center;
+}
+.description {
+	text-align: justify;
 }
 
 .collapsible-body {
@@ -219,4 +208,8 @@ h2,h4 {
 }
 .profil-album {
 	height:700px;
+}
+.card-title{
+	background-color: rgb(255, 144, 0);
+	border-radius: 5px;
 }
