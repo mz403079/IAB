@@ -19,7 +19,7 @@ if (($_SESSION['userID'] != "")) {
     include("navigation.php");
     include("check.php");
 
-    if ($is_logged == 1) {
+    if ($is_logged != 0) {
     $current_user_id = $_SESSION['userID'];
     echo $current_user_id;
 

@@ -9,7 +9,8 @@ if (!isset($_SESSION['username'])) {
 if (isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
-    header("location: login.php");
+    unset($_SESSION['userID']);
+    header("location: index.php");
 }
 
 ?>
@@ -38,7 +39,6 @@ include("navigation.php")
       <li><a href="index.php" class="black-text">Wszystkie</a></li>
       <li><a href="index.php?genre=Pop" class="black-text">Pop</a></li>
       <li><a href="index.php?genre=Rock" class="black-text">Rock</a></li>
-
     </ul>
   </div>
     <?php

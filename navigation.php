@@ -23,6 +23,7 @@ if ($is_logged == 0) { ?>
   <header>
     <div class="nav-bar">
       <ul>
+
         <li>
           <a href="top100.php">Top 100</a>
         </li>
@@ -32,6 +33,11 @@ if ($is_logged == 0) { ?>
         <li>
           <a href='profil.php'><?php echo $_SESSION['username']; ?></a>
         </li>
+          <?php if ($is_logged == 2) { ?>
+            <li>
+              <a href="admin-panel.php">Panel admina</a>
+            </li>
+          <?php } ?>
       </ul>
     </div>
   </header>
