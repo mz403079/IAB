@@ -112,17 +112,26 @@ $result = pg_query($db, $query);
 $album = pg_fetch_row($result);
 
 ?>
+
 <div class="container center">
+  <div class="box z-depth-5">
     <div class="row album-info">
+
       <div>
         <h1> <?php echo $album[1]; ?>
+            <?php if($is_logged != 0) { ?>
             <?php if ($added_fav) { ?>
-              <a class="btn-floating btn-large waves-effect waves-light remove_favourite">-</a>
+              <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite">-</a>
             <?php } else { ?>
-          <a class="btn-floating btn-large waves-effect waves-light add_favourite">+</a>
+          <a class="btn-floating btn-large orange waves-effect waves-light add_favourite">+</a>
+          <?php } }
+          else { ?>
+              <div class="tooltip">
+                <a class="btn-floating disabled btn-large waves-effect waves-light add_favourite">+</a>
+            <span class="tooltiptext">Zaloguj się!</span>
+              </div>
           <?php } ?>
         </h1>
-
       <h5>
           <?php
           foreach ($album_artists as $album_artist) {
@@ -132,11 +141,11 @@ $album = pg_fetch_row($result);
           echo '</h5>';
           ?>
       </div>
-        <div class="col s12 l5 left">
+        <div class="col s12 l5 left z-depth-5">
 
             <?php echo "<img src=" . $album[3] . " alt=" . $album[1] . " class='cover'>";
             ?>
-          <table style="width:100%">
+          <table class="album-table" style="width:100%">
             <tr>
               <td>Gatunki:</td>
               <td>
@@ -172,7 +181,6 @@ $album = pg_fetch_row($result);
               </td>
             </tr>
           </table>
-
         </div>
 
         <div class="col s12 l5 right">
@@ -219,14 +227,14 @@ $album = pg_fetch_row($result);
         </div>
     </div>
     <div class="bottom-album">
-
+        <?php if($is_logged != 0) { ?>
       <i class="material-icons" data-index="0">star</i>
       <i class="material-icons" data-index="1">star</i>
       <i class="material-icons" data-index="2">star</i>
       <i class="material-icons" data-index="3">star</i>
       <i class="material-icons" data-index="4">star</i>
       <br>
-      <p class="rating-box">
+      <?php } ?>
           <?php
           $query = "SELECT ROUND(AVG(ocena),1) FROM ocena WHERE id_albumu = $album[0]";      //średnia ocena
           $average_rating = pg_fetch_row(pg_query($db, $query));
@@ -236,6 +244,7 @@ $album = pg_fetch_row($result);
           $num_of_votes = pg_fetch_row(pg_query($db, $query));
           echo $num_of_votes[0] ?> głosów </p>
     </div>
+</div>
 </div>
     <?php
     include('footer.php');

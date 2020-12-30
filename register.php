@@ -3,13 +3,16 @@
   <html>
   <head>
     <title>Rejestracja</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
 
-  <?php include("navigation.php"); ?>
+  <?php
+  include("navigation.php"); ?>
   <div class="container">
     <div class="header">
       <h2>Rejestracja</h2>
@@ -33,13 +36,17 @@
         <input type="password" name="password_2">
       </div>
       <div class="input-group">
-        <button type="submit" class="btn" name="reg_user">Zarejestruj</button>
+        <button type="submit" class="btn waves-effect orange" name="reg_user">Zarejestruj</button>
       </div>
       <p>
-        Masz już konto?? <a href="login.php">Zaloguj</a>
+        Masz już konto? <a class="orange-text" href="login.php">Zaloguj</a>
       </p>
     </form>
+
   </div>
+  <?php
+  include('footer.php');
+  ?>
   <script type="text/javascript" src="js/error.js"></script>
   <script type="text/javascript" src="materialize/js/materialize.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"

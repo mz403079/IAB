@@ -27,13 +27,16 @@
 			<input type="password" name="password">
 		</div>
 		<div class="input-group">
-			<button type="submit" class="btn" name="login_user">Login</button>
+			<button type="submit" class="btn waves-effect orange" name="login_user">Login</button>
 		</div>
 		<p>
-			Nie masz konta? <a href="register.php">Zarejestruj</a>
+			Nie masz konta? <a class="orange-text" href="register.php">Zarejestruj</a>
 		</p>
 	</form>
 </div>
+<?php
+include('footer.php');
+?>
 <script type="text/javascript" src="materialize/js/materialize.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="

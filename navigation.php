@@ -3,8 +3,7 @@ include("check.php")
 ?>
 <?php
 if ($is_logged == 0) { ?>
-
-  <header>
+  <div class="hed">
     <div class="nav-bar">
       <ul>
         <li>
@@ -18,12 +17,11 @@ if ($is_logged == 0) { ?>
         </li>
       </ul>
     </div>
-  </header>
+  </div>
 <?php } else { ?>
-  <header>
+  <div class="hed">
     <div class="nav-bar">
       <ul>
-
         <li>
           <a href="top100.php">Top 100</a>
         </li>
@@ -40,5 +38,5 @@ if ($is_logged == 0) { ?>
           <?php } ?>
       </ul>
     </div>
-  </header>
+  </div>
 <?php } ?>

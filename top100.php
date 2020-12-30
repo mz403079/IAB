@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<div>
     <?php
     include("navigation.php")
     ?>
@@ -17,7 +16,7 @@
         <?php
         $i = 1;
         $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, wykonawca.nazwa,
-wytwornia.nazwa,wykonawca.biografia, ROUND(AVG(ocena.ocena),1) as oc, COUNT(*) ocena FROM album_wykonawca
+wytwornia.nazwa, album.opis, ROUND(AVG(ocena.ocena),1) as oc, COUNT(*) ocena FROM album_wykonawca
 JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
 JOIN wytwornia ON album.id_wytworni=wytwornia.id_wytworni
@@ -26,27 +25,32 @@ GROUP BY album.id_albumu,wykonawca.nazwa,wytwornia.nazwa,wykonawca.biografia
 ORDER BY oc DESC NULLS LAST";
         $result = pg_query($db, $query);
         while ($row = pg_fetch_row($result)) { ?>
+          <div class="box z-depth-5">
             <div class="card">
-          <div class="card-image col s12 m6">
-              <?php
-              echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'>";
-              echo"<a class='card-title waves-effect waves-light'>$i</a></a>";
-              $i++;
-              ?>
-          </div>
+              <div class="card-image col s12 m6 z-depth-5">
+                  <?php
+                  echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'>";
+                  echo "<a class='card-title waves-effect waves-light'>$i</a></a>";
+                  $i++;
+                  ?>
+              </div>
             </div>
-          <div class="card-content col s12 m5 offset-m1">
-              <?php
-              echo "<h2>$row[4] \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
-              echo $row[6];
-              ?>
-          </div>
-          <div class="bottom col s12 center">
+            <div class="card-content col s12 m5 offset-m1">
+                <?php
+                echo "<h2>$row[4] \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
+                echo $row[6];
+                ?>
+            </div>
+          <div class="bottom col s12 center z-depth-1">
             <p>
                 <?php
+                if($row[7] === null) {
+                 echo 'brak';
+                 } else {
                 echo $row[7] ?>/5<br>
                 <?php
-                echo $row[8] ?> głosów </p>
+                echo $row[8]; } ?> głosów </p>
+          </div>
           </div>
             <?php
         } ?>

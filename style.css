@@ -11,7 +11,25 @@ body {
   font-size: 120%;
   background-color: whitesmoke;
 }
+html {
+  position: relative;
+  min-height: 100%;
+}
 
+body {
+  margin: 0 0 100px; /* bottom = footer height */
+}
+.page-footer{
+  position: absolute;
+  background-color: orange;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 100px;
+  margin-top: 100px;
+}
+.dataTables_filter input { width: 50px }
+.dataTables_info { margin-top: 12px }
 .header {
   width: 30%;
   color: white;
@@ -19,11 +37,13 @@ body {
   text-align: center;
   border: 1px solid rgba(255, 144, 0, .66);
   border-bottom: none;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 10px 10px 0 0;
   margin: 20px auto 0;
   padding: 20px;
 }
-
+.mdc-button{
+  margin-top: 20px;
+}
 #login {
   width: 30%;
   margin: 0px auto;
@@ -71,7 +91,27 @@ body {
   border-radius: 5px;
   text-align: left;
 }
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: 18px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
 
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 .success {
   color: #3c763d;
   background: #dff0d8;
@@ -79,7 +119,7 @@ body {
   margin-bottom: 20px;
 }
 
-header {
+.hed {
   background: rgb(255, 144, 0);
   position: fixed;
   text-align: center;
@@ -146,14 +186,18 @@ header {
   margin: 0 6px 10px;
   font-weight: 600;
 }
-
+.album-table, th {
+  font-weight: 600;
+}
 .content-albums, .content-album {
 
   padding-top: 100px;
   margin: 0 auto;
 
 }
-
+.card-content{
+ text-align: justify;
+}
 
 .cover {
   width: 100%;
@@ -202,6 +246,11 @@ td, tr {
 .bottom-album {
   font-size: 30px;
 }
+.bottom {
+  margin-top:20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
 
 h2, h4 {
   padding: 0;
@@ -218,16 +267,6 @@ h2, h4 {
   background-color: black;
 }
 
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #C25B56;
-  color: black;
-  text-align: center;
-}
-
 .dropdown-trigger {
   height: 45px;
 }
@@ -240,6 +279,20 @@ h2, h4 {
   height: 700px;
 }
 
+.box {
+  padding-top: 40px;
+  border-radius: 20px;
+  margin-bottom: 170px;
+}
+.box:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+
+.card-image {
+  border-radius: 20px;
+}
 .card-title {
   background-color: rgb(255, 144, 0);
   border-radius: 5px;

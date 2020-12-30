@@ -61,6 +61,7 @@ if (($_SESSION['userID'] != "")) {
         } ?>
     </div>
   </div>
+  </div>
     <?php
     include('footer.php');
     ?>
