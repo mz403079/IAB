@@ -31,9 +31,8 @@ if (isset($_POST['add'])) {
                 VALUES ($id_ulubione[0]+1,'$current_user_id','$current_album_id')";
         $result = pg_query($db, $query);
         $response_array['status'] = 'success';
-    }
-    else
-    $response_array['status'] = 'error';
+    } else
+        $response_array['status'] = 'error';
 
     exit;
 }
@@ -47,100 +46,100 @@ if (isset($_POST['remove'])) {
 ?>
 
 
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Album Wykonawcy</title>
+  <!DOCTYPE HTML>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Wykonawcy</title>
 
-</head>
-<body>
+  </head>
+  <body>
 
-<?php
-include('navigation.php');
-?>
-<?php
+  <?php
+  include('navigation.php');
+  ?>
+  <?php
 
 
-$query = "SELECT album.nazwa, gatunek.nazwa, album.id_albumu
+  $query = "SELECT album.nazwa, gatunek.nazwa, album.id_albumu
             FROM gatunek_album
             JOIN album on gatunek_album.id_albumu=album.id_albumu
 			JOIN gatunek on gatunek_album.id_gatunku=gatunek.id_gatunku
 			WHERE album.id_albumu=$current_album_id";
-$result = pg_query($db, $query);
-$genres = array();
-while ($row = pg_fetch_row($result)) {
-    $genres[] = $row;
-}
-$query = "SELECT album.id_albumu, wykonawca.nazwa
+  $result = pg_query($db, $query);
+  $genres = array();
+  while ($row = pg_fetch_row($result)) {
+      $genres[] = $row;
+  }
+  $query = "SELECT album.id_albumu, wykonawca.nazwa
         FROM album_wykonawca
 		JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 		JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
 		WHERE album.id_albumu=$current_album_id";
-$result = pg_query($db, $query);
-$album_artists = array();
-while ($row = pg_fetch_row($result)) {
-    $album_artists[] = $row;
-}
-$query = "SELECT piosenka.id_piosenki, wykonawca.nazwa
+  $result = pg_query($db, $query);
+  $album_artists = array();
+  while ($row = pg_fetch_row($result)) {
+      $album_artists[] = $row;
+  }
+  $query = "SELECT piosenka.id_piosenki, wykonawca.nazwa
         FROM piosenka_wykonawca
 		JOIN piosenka ON piosenka_wykonawca.id_piosenki=piosenka.id_piosenki
 		JOIN wykonawca ON piosenka_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
 		WHERE piosenka.id_albumu=$current_album_id";
-$result = pg_query($db, $query);
-$song_artists = array();
-while ($row = pg_fetch_row($result)) {
-    $song_artists[] = $row;
-}
-if($is_logged != 0) {
-    $query = "SELECT * FROM ulubione WHERE id_albumu = $current_album_id AND id_uzytkownika = $current_user_id";
-    $result = pg_query($db, $query);
-    $added_fav = pg_fetch_assoc($result);
-}
-$query = "SELECT album.id_albumu, album.nazwa, album.premiera, album.okladka, album.liczba_piosenek,
+  $result = pg_query($db, $query);
+  $song_artists = array();
+  while ($row = pg_fetch_row($result)) {
+      $song_artists[] = $row;
+  }
+  if ($is_logged != 0) {
+      $query = "SELECT * FROM ulubione WHERE id_albumu = $current_album_id AND id_uzytkownika = $current_user_id";
+      $result = pg_query($db, $query);
+      $added_fav = pg_fetch_assoc($result);
+  }
+  $query = "SELECT album.id_albumu, album.nazwa, album.premiera, album.okladka, album.liczba_piosenek,
             piosenka.tytul,piosenka.dlugosc,piosenka.nr_piosenki,
             wytwornia.nazwa, piosenka.kompozytor, piosenka.mix, piosenka.id_piosenki FROM album
-            JOIN piosenka ON album.id_albumu=piosenka.id_albumu
+            LEFT JOIN piosenka ON album.id_albumu=piosenka.id_albumu
             JOIN wytwornia on album.id_wytworni=wytwornia.id_wytworni
             WHERE album.id_albumu=$current_album_id
             ORDER BY piosenka.nr_piosenki";
-$result = pg_query($db, $query);
-$album = pg_fetch_row($result);
+  $result = pg_query($db, $query);
+  $album = pg_fetch_row($result);
 
-?>
+  ?>
 
-<div class="container center">
-  <div class="box z-depth-5">
-    <div class="row album-info">
+  <div class="container center">
+    <div class="box z-depth-5">
+      <div class="row album-info">
 
-      <div>
-        <h1> <?php echo $album[1]; ?>
-            <?php if($is_logged != 0) { ?>
-            <?php if ($added_fav) { ?>
-              <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite">-</a>
-            <?php } else { ?>
-          <a class="btn-floating btn-large orange waves-effect waves-light add_favourite">+</a>
-          <?php } }
-          else { ?>
-              <div class="tooltip">
-                <a class="btn-floating disabled btn-large waves-effect waves-light add_favourite">+</a>
-            <span class="tooltiptext">Zaloguj się!</span>
-              </div>
-          <?php } ?>
-        </h1>
-      <h5>
-          <?php
-          foreach ($album_artists as $album_artist) {
-              if ($album[0] == $album_artist[0])
-                  echo "$album_artist[1] ";
-          }
-          echo '</h5>';
-          ?>
-      </div>
+        <div>
+          <h1> <?php echo $album[1]; ?>
+              <?php if ($is_logged != 0) { ?>
+                  <?php if ($added_fav) { ?>
+                  <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite">-</a>
+                  <?php } else { ?>
+                  <a class="btn-floating btn-large orange waves-effect waves-light add_favourite">+</a>
+                  <?php }
+              } else { ?>
+                <div class="tooltip">
+                  <a class="btn-floating disabled btn-large waves-effect waves-light add_favourite">+</a>
+                  <span class="tooltiptext">Zaloguj się!</span>
+                </div>
+              <?php } ?>
+          </h1>
+          <h5>
+              <?php
+              foreach ($album_artists as $album_artist) {
+                  if ($album[0] == $album_artist[0])
+                      echo "$album_artist[1] ";
+              }
+              echo '</h5>';
+              ?>
+        </div>
         <div class="col s12 l5 left z-depth-5">
 
             <?php echo "<img src=" . $album[3] . " alt=" . $album[1] . " class='cover'>";
@@ -225,16 +224,16 @@ $album = pg_fetch_row($result);
               <?php } ?>
           </ul>
         </div>
-    </div>
-    <div class="bottom-album">
-        <?php if($is_logged != 0) { ?>
-      <i class="material-icons" data-index="0">star</i>
-      <i class="material-icons" data-index="1">star</i>
-      <i class="material-icons" data-index="2">star</i>
-      <i class="material-icons" data-index="3">star</i>
-      <i class="material-icons" data-index="4">star</i>
-      <br>
-      <?php } ?>
+      </div>
+      <div class="bottom-album">
+          <?php if ($is_logged != 0) { ?>
+            <i class="material-icons" data-index="0">star</i>
+            <i class="material-icons" data-index="1">star</i>
+            <i class="material-icons" data-index="2">star</i>
+            <i class="material-icons" data-index="3">star</i>
+            <i class="material-icons" data-index="4">star</i>
+            <br>
+          <?php } ?>
           <?php
           $query = "SELECT ROUND(AVG(ocena),1) FROM ocena WHERE id_albumu = $album[0]";      //średnia ocena
           $average_rating = pg_fetch_row(pg_query($db, $query));
@@ -243,12 +242,12 @@ $album = pg_fetch_row($result);
           $query = "SELECT COUNT(*) FROM ocena WHERE id_albumu = $album[0]";
           $num_of_votes = pg_fetch_row(pg_query($db, $query));
           echo $num_of_votes[0] ?> głosów </p>
+      </div>
     </div>
-</div>
-</div>
-    <?php
-    include('footer.php');
-    ?>
+  </div>
+  <?php
+  include('footer.php');
+  ?>
   <script type="text/javascript" src="materialize/js/materialize.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"
           integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -280,11 +279,11 @@ $album = pg_fetch_row($result);
         }
       });
       $('.add_favourite').on('click', function () {
-        M.toast({html: 'Dodałeś album do twojej listy!', classes:'green rounded'});
+        M.toast({html: 'Dodałeś album do twojej listy!', classes: 'green rounded'});
         addToFavourite();
       });
       $('.remove_favourite').on('click', function () {
-        M.toast({html: 'Usunąłeś album z twojej listy!', classes:'red rounded'});
+        M.toast({html: 'Usunąłeś album z twojej listy!', classes: 'red rounded'});
         removeFavourite();
       });
     });
@@ -297,16 +296,17 @@ $album = pg_fetch_row($result);
 
     function addToFavourite() {
       $.ajax({
-       // url: "album.php?id=<?php echo $current_album_id ?>",
+        // url: "album.php?id=<?php echo $current_album_id ?>",
         type: "post",
         dataType: "json",
         data: {
           'add': 1,
-        },  success: function(result) {
+        }, success: function (result) {
           alert("action performed successfully"); //this alert is fired
         }
       });
     }
+
     function removeFavourite() {
       $.ajax({
         url: "album.php?id=<?php echo $current_album_id ?>",
@@ -336,8 +336,8 @@ $album = pg_fetch_row($result);
       $('.material-icons').css('color', 'black');
     }
   </script>
-</body>
-</html>
+  </body>
+  </html>
 <?php if (count($errors) > 0) : ?>
     <?php foreach ($errors as $error) : ?>
     <script type="text/javascript">

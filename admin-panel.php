@@ -17,14 +17,57 @@
 ?>
 <?php
 if (isset($_POST['insert_movie'])) {
-    $username = pg_escape_string($db, $_POST['username']);
-    $password = pg_escape_string($db, $_POST['password']);
-    echo 'her';
-    $query = "INSERT INTO album (nazwa, premiera, id_wytworni, typ, okladka, liczba_piosenek, opis) 
-					  VALUES('$username', '2020-10-17','1','$password','sf','18','aaa')";
+    $album_name = pg_escape_string($db, $_POST['album_name']);
+    $artist = pg_escape_string($db, $_POST['artist']);
+    $label = pg_escape_string($db,$_POST['label']);
+    $cover_link = pg_escape_string($db,$_POST['cover']);
+    $number_of_songs = $_POST['number_of_songs'];
+    $description = pg_escape_string($db,$_POST['description']);
+    $release = pg_escape_string($db,$_POST['release']);
+
+
+    $result = pg_query($db, "SELECT * FROM wykonawca WHERE nazwa='$artist'");
+    $artist_present = pg_fetch_row($result);
+    $artist_id = 0;
+    if($artist_present)
+      $artist_id = $artist_present[0];
+    else {
+        pg_query($db, "INSERT into wykonawca(nazwa) VALUES('$artist')");
+        $result = pg_query($db, "SELECT * FROM wykonawca ORDER BY id_wykonawcy DESC LIMIT 1 ");
+        $row = pg_fetch_row($result);
+        $artist_id = $row[0];
+    }
+
+    $result = pg_query($db, "SELECT * FROM wytwornia WHERE nazwa='$label'");
+    $label_present = pg_fetch_row($result);
+    $label_id = 0;
+    if($label_present)
+        $label_id = $label_present[0];
+    else {
+        pg_query($db, "INSERT into wytwornia(nazwa) VALUES('$label')");
+        $result = pg_query($db, "SELECT * FROM wytwornia ORDER BY id_wytworni DESC LIMIT 1 ");
+        $row = pg_fetch_row($result);
+        $label_id = $row[0];
+    }
+
+    $query = "INSERT INTO album (nazwa, premiera, id_wytworni, okladka, liczba_piosenek, opis)
+					  VALUES('$album_name', '$release','$label_id','$cover_link','$number_of_songs','$description')";
     pg_query($db, $query) or die('Query failed: ' . pg_last_error());
-    $query = "INSERT INTO album_wykonawca (id_albumu,id_wykonawcy) 
-					  VALUES('7','1')";
+    $result = pg_query($db, "SELECT * FROM album WHERE nazwa='$album_name'");
+    $row = pg_fetch_row($result);
+    $album_id = $row[0];
+
+    $checkbox1=$_POST['genre'];
+    echo $checkbox1;
+    foreach($checkbox1 as $chk1)
+    {
+        echo $chk1;
+        $query = "INSERT INTO gatunek_album(id_albumu,id_gatunku) VALUES('$album_id','$chk1')";
+        pg_query($db, $query) or die('Query failed: ' . pg_last_error());
+    }
+
+
+    $query = "INSERT INTO album_wykonawca(id_albumu,id_wykonawcy) VALUES('$album_id','$artist_id')";
     pg_query($db, $query) or die('Query failed: ' . pg_last_error());
     header('location: admin-panel.php');
 }
@@ -37,7 +80,7 @@ if (isset($_POST['insert_movie'])) {
   <!-- Modal Structure -->
   <div  class="modal row" id="modal1">
     <div class="modal-content col s8 offset-l2">
-      <h4>Dodaj film</h4>
+      <h4>Dodaj film do bazy</h4>
       <form method="post" id="insertMovie">
 
         <div class="input-field">
@@ -54,14 +97,14 @@ if (isset($_POST['insert_movie'])) {
         </div>
         <div class="input-field">
 
-            <select id="genre" multiple>
+            <select id="genre" name="genre[]" multiple>
               <option value="" disabled> Gatunek</option>
               <?
               $query = "SELECT * FROM gatunek";
               $result = pg_query($db, $query);
               while ($row = pg_fetch_row($result)) {
               ?>
-              <option value="1"><?php echo $row[1]  ?></option>
+              <option value="<?php echo $row[0] ?>" name="genre[]"><?php echo $row[1]  ?></option>
               <?php } ?>
             </select>
           <label for="genre"></label>
@@ -71,11 +114,11 @@ if (isset($_POST['insert_movie'])) {
           <input id="release" type="text" name="release">
         </div>
         <div class="input-field">
-          <label>link do okładki:</label>
-          <input type="text" name="cover">
+          <label>Liczba piosenek:</label>
+          <input type="number" name="number_of_songs">
         </div>
         <div class="input-field">
-          <label>data link do okładki:</label>
+          <label>link do okładki:</label>
           <input type="text" name="cover">
         </div>
         <div class="input-field">
@@ -83,12 +126,9 @@ if (isset($_POST['insert_movie'])) {
           <label for="textarea1">Opis albumu:</label>
         </div>
         <div class="input-field">
-          <button type="submit" class="btn waves-effect orange" name="insert_movie">Login</button>
+          <button type="submit" class="btn waves-effect orange" name="insert_movie">Dodaj</button>
         </div>
       </form>
-    </div>
-    <div class="modal-footer">
-      <a class="modal-close waves-effect waves-green btn-flat">Zapisz</a>
     </div>
   </div>
   <?php
