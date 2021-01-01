@@ -19,18 +19,18 @@
 if (isset($_POST['insert_movie'])) {
     $album_name = pg_escape_string($db, $_POST['album_name']);
     $artist = pg_escape_string($db, $_POST['artist']);
-    $label = pg_escape_string($db,$_POST['label']);
-    $cover_link = pg_escape_string($db,$_POST['cover']);
+    $label = pg_escape_string($db, $_POST['label']);
+    $cover_link = pg_escape_string($db, $_POST['cover']);
     $number_of_songs = $_POST['number_of_songs'];
-    $description = pg_escape_string($db,$_POST['description']);
-    $release = pg_escape_string($db,$_POST['release']);
+    $description = pg_escape_string($db, $_POST['description']);
+    $release = pg_escape_string($db, $_POST['release']);
 
 
     $result = pg_query($db, "SELECT * FROM wykonawca WHERE nazwa='$artist'");
     $artist_present = pg_fetch_row($result);
     $artist_id = 0;
-    if($artist_present)
-      $artist_id = $artist_present[0];
+    if ($artist_present)
+        $artist_id = $artist_present[0];
     else {
         pg_query($db, "INSERT into wykonawca(nazwa) VALUES('$artist')");
         $result = pg_query($db, "SELECT * FROM wykonawca ORDER BY id_wykonawcy DESC LIMIT 1 ");
@@ -41,7 +41,7 @@ if (isset($_POST['insert_movie'])) {
     $result = pg_query($db, "SELECT * FROM wytwornia WHERE nazwa='$label'");
     $label_present = pg_fetch_row($result);
     $label_id = 0;
-    if($label_present)
+    if ($label_present)
         $label_id = $label_present[0];
     else {
         pg_query($db, "INSERT into wytwornia(nazwa) VALUES('$label')");
@@ -57,10 +57,9 @@ if (isset($_POST['insert_movie'])) {
     $row = pg_fetch_row($result);
     $album_id = $row[0];
 
-    $checkbox1=$_POST['genre'];
+    $checkbox1 = $_POST['genre'];
     echo $checkbox1;
-    foreach($checkbox1 as $chk1)
-    {
+    foreach ($checkbox1 as $chk1) {
         echo $chk1;
         $query = "INSERT INTO gatunek_album(id_albumu,id_gatunku) VALUES('$album_id','$chk1')";
         pg_query($db, $query) or die('Query failed: ' . pg_last_error());
@@ -71,46 +70,51 @@ if (isset($_POST['insert_movie'])) {
     pg_query($db, $query) or die('Query failed: ' . pg_last_error());
     header('location: admin-panel.php');
 }
+if (isset($_POST['removeId'])) {
+    if (($_SESSION['userID'] != "")) {
+        $album_id = $_POST['removeId'];
+        $query = "DELETE FROM album WHERE id_albumu = $album_id";
+        pg_query($db, $query);
+    }
+}
 ?>
 <div class="container">
-  <!-- Modal Trigger -->
-  <!-- Modal Trigger -->
-  <a class="waves-effect waves-light btn tooltipped modal-trigger" onclick="$('#modal1').modal('open');">Modal</a>
+  <a class="waves-effect waves-light btn orange tooltipped modal-trigger"
+     onclick="$('#modal1').modal('open');">Dodaj album</a>
 
-  <!-- Modal Structure -->
-  <div  class="modal row" id="modal1">
+  <div class="modal row" id="modal1">
     <div class="modal-content col s8 offset-l2">
       <h4>Dodaj film do bazy</h4>
       <form method="post" id="insertMovie">
 
         <div class="input-field">
           <label for="album_name">Nazwa albumu:</label>
-          <input id="album_name" type="text" name="album_name" >
+          <input id="album_name" type="text" name="album_name">
         </div>
         <div class="input-field">
-          <label for="artist" >Wykonawca:</label>
+          <label for="artist">Wykonawca:</label>
           <input id="artist" type="text" name="artist">
         </div>
         <div class="input-field">
-          <label for="label" >Wytwornia:</label>
+          <label for="label">Wytwornia:</label>
           <input id="label" type="text" name="label">
         </div>
         <div class="input-field">
 
-            <select id="genre" name="genre[]" multiple>
-              <option value="" disabled> Gatunek</option>
+          <select id="genre" name="genre[]" multiple>
+            <option value="" disabled> Gatunek</option>
               <?
               $query = "SELECT * FROM gatunek";
               $result = pg_query($db, $query);
               while ($row = pg_fetch_row($result)) {
-              ?>
-              <option value="<?php echo $row[0] ?>" name="genre[]"><?php echo $row[1]  ?></option>
+                  ?>
+                <option value="<?php echo $row[0] ?>" name="genre[]"><?php echo $row[1] ?></option>
               <?php } ?>
-            </select>
+          </select>
           <label for="genre"></label>
         </div>
         <div class="input-field">
-          <label for="release" >data (rrrr-mm-dd):</label>
+          <label for="release">data (rrrr-mm-dd):</label>
           <input id="release" type="text" name="release">
         </div>
         <div class="input-field">
@@ -122,7 +126,7 @@ if (isset($_POST['insert_movie'])) {
           <input type="text" name="cover">
         </div>
         <div class="input-field">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
+          <textarea id="textarea1" class="materialize-textarea" name="description"></textarea>
           <label for="textarea1">Opis albumu:</label>
         </div>
         <div class="input-field">
@@ -131,16 +135,16 @@ if (isset($_POST['insert_movie'])) {
       </form>
     </div>
   </div>
-  <?php
-  $query = "SELECT album.id_albumu, album.nazwa, album.premiera, album.okladka, wykonawca.nazwa,
+    <?php
+    $query = "SELECT album.id_albumu, album.nazwa, album.premiera, album.okladka, wykonawca.nazwa,
   wytwornia.nazwa
   FROM album_wykonawca
   JOIN album ON album_wykonawca.id_albumu=album.id_albumu
   JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
   JOIN wytwornia ON album.id_wytworni=wytwornia.id_wytworni
   ORDER BY album.nazwa DESC";
-  $result = pg_query($db, $query);
-  ?>
+    $result = pg_query($db, $query);
+    ?>
   <div class="row">
     <table id="example" class="mdl-data-table col s12" style="width:100%">
       <thead>
@@ -150,6 +154,7 @@ if (isset($_POST['insert_movie'])) {
         <th>Autor</th>
         <th>Wytwornia</th>
         <th>Rok wydania</th>
+        <th>Usuń album</th>
       </tr>
       </thead>
       <tbody>
@@ -160,6 +165,9 @@ if (isset($_POST['insert_movie'])) {
           <td><?php echo "$row[4]"; ?></td>
           <td><?php echo "$row[5]"; ?></td>
           <td><?php echo "$row[2]"; ?></td>
+          <td class="center-align"><a class="waves-effect waves-light btn orange delete-album"
+                                      data-index="<?php echo "$row[0]"; ?>"><i
+                  class="medium material-icons">delete_forever</i></a></td>
         </tr>
       <?php } ?>
       </tbody>
@@ -170,6 +178,7 @@ if (isset($_POST['insert_movie'])) {
         <th>Autor</th>
         <th>Wytwornia</th>
         <th>Rok wydania</th>
+        <th>Usuń album</th>
       </tr>
       </tfoot>
     </table>
@@ -189,7 +198,7 @@ if (isset($_POST['insert_movie'])) {
   $(document).ready(function () {
     $('#modal1').modal();
   });
-  $(document).ready(function(){
+  $(document).ready(function () {
     $('select').formSelect();
   });
   $(document).ready(function () {
@@ -207,16 +216,32 @@ if (isset($_POST['insert_movie'])) {
       ]
     });
   });
-  $(function(){
-    $('#insertAlbum').on('submit', function(e){
-      console.log($('#insertAlbum').serialize());
+  $(function () {
+    $('#insertAlbum').on('submit', function (e) {
       $.post('admin-panel.php',
           $('#insertAlbum').serialize(),
-          function(data, status, xhr){
+          function (data, status, xhr) {
             // do something here with response;
           });
     });
   });
+  $('.delete-album').on('click', function () {
+    var e = parseInt($(this).data('index'));
+    removeAlbum(e);
+  });
+
+  function removeAlbum(albumId) {
+    console.log(albumId);
+    $.ajax({
+      url: "admin-panel.php",
+      type: "POST",
+      dataType: "json",
+      data: {
+        'removeId': albumId,
+      }, success: function (r) {
+      }
+    });
+  }
 </script>
 </body>
 </html>

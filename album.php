@@ -1,6 +1,6 @@
 <?php
-$current_album_id = $_GET['id'];
 include('server.php');
+$current_album_id = $_GET['id'];
 $current_user_id = $_SESSION['userID'];
 if (isset($_POST['save'])) {
     if (($_SESSION['userID'] != "")) {
@@ -21,27 +21,18 @@ if (isset($_POST['save'])) {
             $result = pg_query($db, $query);
         }
     }
-    pg_close($db);
 }
 if (isset($_POST['add'])) {
-    if (($_SESSION['userID'] != "")) {
-        $result = pg_query($db, "SELECT id_ulubione FROM ulubione ORDER BY id_ulubione DESC LIMIT 1");
-        $id_ulubione = pg_fetch_row($result);
-        $query = "INSERT INTO ulubione (id_ulubione,id_uzytkownika, id_albumu)
-                VALUES ($id_ulubione[0]+1,'$current_user_id','$current_album_id')";
-        $result = pg_query($db, $query);
-        $response_array['status'] = 'success';
-    } else
-        $response_array['status'] = 'error';
+    $query = "INSERT INTO ulubione (id_uzytkownika, id_albumu)
+                VALUES ('$current_user_id','$current_album_id')";
+    $result = pg_query($db, $query);
 
-    exit;
 }
 if (isset($_POST['remove'])) {
     if (($_SESSION['userID'] != "")) {
         $query = "DELETE FROM ulubione WHERE id_uzytkownika = $current_user_id AND id_albumu = $current_album_id";
         pg_query($db, $query);
     }
-    pg_close($db);
 }
 ?>
 
@@ -227,11 +218,11 @@ if (isset($_POST['remove'])) {
       </div>
       <div class="bottom-album">
           <?php if ($is_logged != 0) { ?>
-            <i class="material-icons" data-index="0">star</i>
-            <i class="material-icons" data-index="1">star</i>
-            <i class="material-icons" data-index="2">star</i>
-            <i class="material-icons" data-index="3">star</i>
-            <i class="material-icons" data-index="4">star</i>
+            <i class="material-icons star" data-index="0">star</i>
+            <i class="material-icons star" data-index="1">star</i>
+            <i class="material-icons star" data-index="2">star</i>
+            <i class="material-icons star" data-index="3">star</i>
+            <i class="material-icons star" data-index="4">star</i>
             <br>
           <?php } ?>
           <?php
@@ -262,17 +253,17 @@ if (isset($_POST['remove'])) {
 
     var rating = -1;
     $(document).ready(function () {
-      $('.material-icons').on('click', function () {
+      $('.star').on('click', function () {
         rating = parseInt($(this).data('index'));
         saveToDB();
       });
 
-      $('.material-icons').mouseover(function () {
+      $('.star').mouseover(function () {
         restartColors()
         var currentStar = parseInt($(this).data('index'));
         setStars(currentStar);
       });
-      $('.material-icons').mouseleave(function () {
+      $('.star').mouseleave(function () {
         restartColors()
         if (rating > -1) {
           setStars(rating);
@@ -290,19 +281,18 @@ if (isset($_POST['remove'])) {
 
     function setStars(index) {
       for (var i = 0; i <= index; i++) {
-        $('.material-icons:eq(' + i + ')').css('color', 'gold');
+        $('.star:eq(' + i + ')').css('color', 'gold');
       }
     }
 
     function addToFavourite() {
       $.ajax({
-        // url: "album.php?id=<?php echo $current_album_id ?>",
-        type: "post",
+        url: "album.php?id=<?php echo $current_album_id ?>",
+        type: "POST",
         dataType: "json",
         data: {
           'add': 1,
-        }, success: function (result) {
-          alert("action performed successfully"); //this alert is fired
+        }, success: function (r) {
         }
       });
     }
@@ -333,7 +323,7 @@ if (isset($_POST['remove'])) {
     }
 
     function restartColors() {
-      $('.material-icons').css('color', 'black');
+      $('.star').css('color', 'black');
     }
   </script>
   </body>

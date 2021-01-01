@@ -55,7 +55,7 @@ if (isset($_POST['reg_user'])) {
         $_SESSION['username'] = $username;
         $_SESSION['success'] = "Jesteś zarejestrowany!";
         $_SESSION['userID'] = $row[0];
-        header('location: index.php');
+        header('location: profil.php');
     }
 }
 
@@ -85,12 +85,10 @@ if (isset($_POST['login_user'])) {
             $row = pg_fetch_row($result);
             $user_id = $row[0];
             $_SESSION['userID'] = $row[0];
-            header('location: index.php');
+            header('location: profil.php');
             exit();
         } else {
             array_push($errors, "Zły login lub hasło");
         }
     }
 }
-
-?>
