@@ -16,12 +16,12 @@
         <?php
         $i = 1;
         $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, wykonawca.nazwa,
-wytwornia.nazwa, album.opis, ROUND(AVG(ocena.ocena),1) as oc, COUNT(*) ocena FROM album_wykonawca
+wytwornia.nazwa, album.opis, ROUND(AVG(ocena.ocena),1) as oc, COUNT(*) ocena,wykonawca.id_wykonawcy FROM album_wykonawca
 JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
 JOIN wytwornia ON album.id_wytworni=wytwornia.id_wytworni
 LEFT JOIN ocena ON album.id_albumu=ocena.id_albumu
-GROUP BY album.id_albumu,wykonawca.nazwa,wytwornia.nazwa,wykonawca.biografia
+GROUP BY album.id_albumu,wykonawca.nazwa,wykonawca.id_wykonawcy,wytwornia.nazwa,wykonawca.biografia
 ORDER BY oc DESC NULLS LAST";
         $result = pg_query($db, $query);
         while ($row = pg_fetch_row($result)) { ?>
@@ -37,7 +37,7 @@ ORDER BY oc DESC NULLS LAST";
             </div>
             <div class="card-content col s12 m5 offset-m1">
                 <?php
-                echo "<h2>$row[4] \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
+                echo "<h2><a href='wykonawca.php?id=" . $row[9] . "'>$row[4]</a> \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
                 echo $row[6];
                 ?>
             </div>
