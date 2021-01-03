@@ -66,7 +66,7 @@ if (isset($_POST['remove'])) {
   while ($row = pg_fetch_row($result)) {
       $genres[] = $row;
   }
-  $query = "SELECT album.id_albumu, wykonawca.nazwa
+  $query = "SELECT album.id_albumu, wykonawca.nazwa, wykonawca.id_wykonawcy
         FROM album_wykonawca
 		JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 		JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
@@ -103,17 +103,17 @@ if (isset($_POST['remove'])) {
 
   ?>
 
-  <div class="container center">
-    <div class="box z-depth-5">
+  <div class="container row center">
+    <div class="box col s12 l10 offset-l1 z-depth-5">
       <div class="row album-info">
 
         <div>
           <h1> <?php echo $album[1]; ?>
               <?php if ($is_logged != 0) { ?>
                   <?php if ($added_fav) { ?>
-                  <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite">-</a>
+                  <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite"><i class="material-icons">remove</i></a>
                   <?php } else { ?>
-                  <a class="btn-floating btn-large orange waves-effect waves-light add_favourite">+</a>
+                  <a class="btn-floating btn-large orange waves-effect waves-light add_favourite"><i class="material-icons">add</i></a>
                   <?php }
               } else { ?>
                 <div class="tooltip">
@@ -126,12 +126,12 @@ if (isset($_POST['remove'])) {
               <?php
               foreach ($album_artists as $album_artist) {
                   if ($album[0] == $album_artist[0])
-                      echo "$album_artist[1] ";
+                      echo "<span class='underline-animation'><a href='wykonawca.php?id=" . $album_artist[2] . "'>$album_artist[1]</a></span> ";
               }
               echo '</h5>';
               ?>
         </div>
-        <div class="col s12 l5 left z-depth-5">
+        <div class="col s12 l5 left z-depth-3">
 
             <?php echo "<img src=" . $album[3] . " alt=" . $album[1] . " class='cover'>";
             ?>
@@ -239,12 +239,14 @@ if (isset($_POST['remove'])) {
   <?php
   include('footer.php');
   ?>
-  <script type="text/javascript" src="materialize/js/materialize.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"
           integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
           crossorigin="anonymous"></script>
-  <script type="text/javascript" src="js/error.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
   <script>
+    $('.dropdown-trigger').dropdown();
 
     document.addEventListener('DOMContentLoaded', function () {
       var elems = document.querySelectorAll('.collapsible');

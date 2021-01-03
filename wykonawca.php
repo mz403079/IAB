@@ -25,16 +25,18 @@ $current_artist_id = $_GET['id'];
     $result = pg_query($db, $query);
     $row = pg_fetch_row($result);
     ?>
-  <div class="container">
-    <div class="col s12 m8 offset-m2 l6 offset-l3">
+  <div class="container row">
+    <div class="col  s12 m8 offset-m2 l10 offset-l1">
+    <div>
       <div class="card-panel grey lighten-5 z-depth-1">
         <div class="row valign-wrapper">
           <div class="col s4">
               <?php
-              echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[9] . " alt=" . $row[1] . " class='circle responsive-img'></a>";
+              echo "<img src=" . $row[9] . " alt=" . $row[1] . " class='circle responsive-img'>";
               ?>
           </div>
           <div class="col s8">
+            <h1 class="left-align"><?php echo $row[4];?></h1>
               <span class="black-text">
                 <?php
                   echo $row[7];
@@ -52,6 +54,7 @@ $current_artist_id = $_GET['id'];
     $result = pg_query($db, $query);
       while ($row = pg_fetch_row($result)) { ?>
         <h2 class="left-align"><?php echo $row[2]; ?></h2>
+
         <div class="box z-depth-5">
 
           <div class="card">
@@ -63,7 +66,7 @@ $current_artist_id = $_GET['id'];
           </div>
           <div class="card-content col s12 m5 offset-m1">
               <?php
-              echo "<h2><a href='wykonawca.php?id=" . $row[8] . "'>$row[4]</a> \"$row[1]\"</h2>";
+              echo "<h2 class='underline-animation'><a href='wykonawca.php?id=" . $row[8] . "'>$row[4]</a> \"$row[1]\"</h2>";
               echo $row[6];
               ?>
           </div>
@@ -71,6 +74,7 @@ $current_artist_id = $_GET['id'];
           <?php
       } ?>
   </div>
+    </div>
   </div>
     <?php
     include('footer.php');

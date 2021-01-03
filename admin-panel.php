@@ -83,7 +83,7 @@ if (isset($_POST['removeId'])) {
      onclick="$('#modal1').modal('open');">Dodaj album</a>
 
   <div class="modal row" id="modal1">
-    <div class="modal-content col s8 offset-l2">
+    <div class="modal-content col s12 l8 offset-l2">
       <h4>Dodaj film do bazy</h4>
       <form method="post" id="insertMovie">
 
@@ -137,7 +137,7 @@ if (isset($_POST['removeId'])) {
   </div>
     <?php
     $query = "SELECT album.id_albumu, album.nazwa, album.premiera, album.okladka, wykonawca.nazwa,
-  wytwornia.nazwa
+  wytwornia.nazwa, wykonawca.id_wykonawcy
   FROM album_wykonawca
   JOIN album ON album_wykonawca.id_albumu=album.id_albumu
   JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
@@ -162,7 +162,7 @@ if (isset($_POST['removeId'])) {
         <tr>
           <td class="center-align"><?php echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " height=50></a>"; ?></td>
           <td><?php echo "$row[1]"; ?></td>
-          <td><?php echo "$row[4]"; ?></td>
+          <td><?php echo "<a href='wykonawca.php?id=" . $row[6] . "'>$row[4]</a>"; ?></td>
           <td><?php echo "$row[5]"; ?></td>
           <td><?php echo "$row[2]"; ?></td>
           <td class="center-align"><a class="waves-effect waves-light btn orange delete-album"
@@ -195,6 +195,10 @@ if (isset($_POST['removeId'])) {
 <script type="text/javascript"
         src="https://cdn.datatables.net/1.10.22/js/dataTables.material.min.js"></script>
 <script>
+
+
+  $('.dropdown-trigger').dropdown();
+
   $(document).ready(function () {
     $('#modal1').modal();
   });

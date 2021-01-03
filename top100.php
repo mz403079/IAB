@@ -11,7 +11,7 @@
     <?php
     include("navigation.php")
     ?>
-  <div class="container">
+  <div class="container row">
     <div class="content-albums row">
         <?php
         $i = 1;
@@ -37,7 +37,7 @@ ORDER BY oc DESC NULLS LAST";
             </div>
             <div class="card-content col s12 m5 offset-m1">
                 <?php
-                echo "<h2><a href='wykonawca.php?id=" . $row[9] . "'>$row[4]</a> \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
+                echo "<h2 class='underline-animation'><a href='wykonawca.php?id=" . $row[9] . "'>$row[4]</a> \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
                 echo $row[6];
                 ?>
             </div>
@@ -60,11 +60,15 @@ ORDER BY oc DESC NULLS LAST";
     <?php
     include('footer.php');
     ?>
-  <script type="text/javascript" src="materialize/js/materialize.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-          integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-          crossorigin="anonymous"></script>
-  <script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+            crossorigin="anonymous"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+      $('.dropdown-trigger').dropdown();
+
     document.addEventListener('DOMContentLoaded', function () {
       var elems = document.querySelectorAll('.dropdown-trigger');
       var instances = M.Dropdown.init(elems, 0);

@@ -26,7 +26,7 @@ if (($_SESSION['userID'] != "")) {
     <div class="content-profile">
         <?php
         $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, wykonawca.nazwa,
-                    wytwornia.nazwa
+                    wytwornia.nazwa, wykonawca.id_wykonawcy
             FROM album_wykonawca
 		JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 		JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
@@ -37,9 +37,9 @@ if (($_SESSION['userID'] != "")) {
         $result = pg_query($db, $query);
         $row = pg_fetch_assoc($result);
         if (!$row) {
-            echo "<h3>Nie dodałeś jeszcze żadnych albumów</h3>";
+            echo "<h3>Nie dodałeś jeszcze żadnych albumów!</h3>";
         } else {
-
+            echo "<h3>Lista twoich albumów</h3>";
             echo '<div class="row">';
             $result = pg_query($db, $query);
             while ($row = pg_fetch_row($result)) { ?>
@@ -48,8 +48,7 @@ if (($_SESSION['userID'] != "")) {
                     <?php
                     echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'></a>"; ?>
                     <?php
-
-                    echo "<h5>$row[4] \"$row[1]\"</h5><h6>$row[5], $row[2]</h6>";
+                    echo "<h5 class='underline-animation'><a href='wykonawca.php?id=" .$row[6] . "'>$row[4]</a> \"$row[1]\"</h5><h6>$row[5], $row[2]</h6>";
                     ?>
                 </div>
               </div>
@@ -62,10 +61,14 @@ if (($_SESSION['userID'] != "")) {
 <?php
 include('footer.php');
 ?>
-<script type="text/javascript" src="materialize/js/materialize.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
         crossorigin="anonymous"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+<script>
+  $('.dropdown-trigger').dropdown();
+</script>
 </body>
 </html>

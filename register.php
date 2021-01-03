@@ -13,8 +13,9 @@
 
   <?php
   include("navigation.php"); ?>
-  <div class="container">
-    <div class="header">
+  <div class="container row">
+    <div class="wrapper col s12 m6 offset-m3 l4 offset-l4">
+    <div class="header orange">
       <h2>Rejestracja</h2>
     </div>
 
@@ -42,24 +43,27 @@
         Masz już konto? <a class="orange-text" href="login.php">Zaloguj</a>
       </p>
     </form>
-
+    </div>
   </div>
   <?php
   include('footer.php');
   ?>
   <script type="text/javascript" src="js/error.js"></script>
-  <script type="text/javascript" src="materialize/js/materialize.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"
           integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
           crossorigin="anonymous"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+  <script>
+    $('.dropdown-trigger').dropdown();
+  </script>
   </body>
   </html>
 <?php if (count($errors) > 0) : ?>
     <?php foreach ($errors as $error) : ?>
     <script type="text/javascript">
       var val = "<?php echo $error ?>";
-      console.log(val);
       call(val);
     </script>
 
