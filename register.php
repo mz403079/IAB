@@ -15,11 +15,9 @@
   include("navigation.php"); ?>
   <div class="container row">
     <div class="wrapper col s12 m6 offset-m3 l4 offset-l4">
-    <div class="header orange">
-      <h2>Rejestracja</h2>
-    </div>
 
     <form method="post" action="register.php" id="login">
+      <h4>Zarejestruj konto</h4>
       <div class="input-group">
         <label>Login</label>
         <input type="text" name="username" value="<?php echo $username; ?>">

@@ -1,4 +1,7 @@
-<?php include('server.php') ?>
+<?php include('check.php');
+  if($is_logged != 2)
+      header('location: index.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +22,7 @@
 if (isset($_POST['insert_movie'])) {
     $album_name = pg_escape_string($db, $_POST['album_name']);
     $artist = pg_escape_string($db, $_POST['artist']);
+    $artist_photo = pg_escape_string($db, $_POST['artist_photo']);
     $label = pg_escape_string($db, $_POST['label']);
     $cover_link = pg_escape_string($db, $_POST['cover']);
     $number_of_songs = $_POST['number_of_songs'];
@@ -32,7 +36,7 @@ if (isset($_POST['insert_movie'])) {
     if ($artist_present)
         $artist_id = $artist_present[0];
     else {
-        pg_query($db, "INSERT into wykonawca(nazwa) VALUES('$artist')");
+        pg_query($db, "INSERT into wykonawca(nazwa,zdjecie) VALUES('$artist','$artist_photo')");
         $result = pg_query($db, "SELECT * FROM wykonawca ORDER BY id_wykonawcy DESC LIMIT 1 ");
         $row = pg_fetch_row($result);
         $artist_id = $row[0];
@@ -89,15 +93,19 @@ if (isset($_POST['removeId'])) {
 
         <div class="input-field">
           <label for="album_name">Nazwa albumu:</label>
-          <input id="album_name" type="text" name="album_name">
+          <input id="album_name" type="text" name="album_name" required="" aria-required="true">
         </div>
         <div class="input-field">
           <label for="artist">Wykonawca:</label>
-          <input id="artist" type="text" name="artist">
+          <input id="artist" type="text" name="artist" required="" aria-required="true">
         </div>
         <div class="input-field">
-          <label for="label">Wytwornia:</label>
-          <input id="label" type="text" name="label">
+          <label for="artist_photo">Zdjęcie wykonawcy:</label>
+          <input id="artist_photo" type="text" name="artist_photo">
+        </div>
+        <div class="input-field">
+          <label for="label">Wytwórnia:</label>
+          <input id="label" type="text" name="label" required="" aria-required="true">
         </div>
         <div class="input-field">
 
@@ -114,16 +122,16 @@ if (isset($_POST['removeId'])) {
           <label for="genre"></label>
         </div>
         <div class="input-field">
-          <label for="release">data (rrrr-mm-dd):</label>
-          <input id="release" type="text" name="release">
+          <label for="release">Data (rrrr-mm-dd):</label>
+          <input id="release" type="text" name="release" required="" aria-required="true">
         </div>
         <div class="input-field">
           <label>Liczba piosenek:</label>
-          <input type="number" name="number_of_songs">
+          <input type="number" name="number_of_songs" required="" aria-required="true">
         </div>
         <div class="input-field">
-          <label>link do okładki:</label>
-          <input type="text" name="cover">
+          <label>Link do okładki:</label>
+          <input type="text" name="cover" required="" aria-required="true">
         </div>
         <div class="input-field">
           <textarea id="textarea1" class="materialize-textarea" name="description"></textarea>

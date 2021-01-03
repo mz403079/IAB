@@ -18,7 +18,7 @@ if (($_SESSION['userID'] != "")) {
     include("navigation.php");
     include("check.php");
     if ($is_logged == 0) {
-        header('location: index.php');
+        header('location: result.php');
     }
     $current_user_id = $_SESSION['userID'];
     ?>

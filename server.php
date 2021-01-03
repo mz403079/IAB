@@ -19,7 +19,7 @@ if (isset($_POST['reg_user'])) {
     $password_2 = pg_escape_string($db, $_POST['password_2']);
 
     if (empty($username)) {
-        array_push($errors, "Nie podałeś loginu!.");
+        array_push($errors, "Nie podałeś loginu!");
     }
     if (empty($email)) {
         array_push($errors, "Nie podałeś email-a!");
