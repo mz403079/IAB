@@ -3,20 +3,21 @@
 <head>
   <title>Ranking - Top 100</title>
 
-  <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <?php
-    include("navigation.php")
-    ?>
-  <div class="container row">
-    <div class="content-albums row">
-        <?php
-        $i = 1;
-        $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, wykonawca.nazwa,
+<?php
+include("navigation.php")
+?>
+<div class="container row">
+  <div class="content-albums row">
+      <?php
+      $i = 1;
+      $query = "SELECT album.id_albumu, album.nazwa, extract (year from album.premiera), album.okladka, wykonawca.nazwa,
 wytwornia.nazwa, album.opis, ROUND(AVG(ocena.ocena),1) as oc, COUNT(*) ocena,wykonawca.id_wykonawcy FROM album_wykonawca
 JOIN album ON album_wykonawca.id_albumu=album.id_albumu
 JOIN wykonawca ON album_wykonawca.id_wykonawcy=wykonawca.id_wykonawcy
@@ -24,57 +25,60 @@ JOIN wytwornia ON album.id_wytworni=wytwornia.id_wytworni
 LEFT JOIN ocena ON album.id_albumu=ocena.id_albumu
 GROUP BY album.id_albumu,wykonawca.nazwa,wykonawca.id_wykonawcy,wytwornia.nazwa,wykonawca.biografia
 ORDER BY oc DESC NULLS LAST";
-        $result = pg_query($db, $query);
-        while ($row = pg_fetch_row($result)) { ?>
-          <div class="box z-depth-5">
-            <div class="card">
-              <div class="card-image col s12 m6 z-depth-5">
-                  <?php
-                  echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'>";
-                  echo "<a class='card-title waves-effect waves-light'>$i</a></a>";
-                  $i++;
-                  ?>
-              </div>
-            </div>
-            <div class="card-content col s12 m5 offset-m1">
+      $result = pg_query($db, $query);
+      while ($row = pg_fetch_row($result)) { ?>
+        <div class="box z-depth-5">
+          <div class="card">
+            <div class="card-image col s12 m6 z-depth-5">
                 <?php
-                echo "<h2 class='underline-animation'><a href='wykonawca.php?id=" . $row[9] . "'>$row[4]</a> \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
-                echo $row[6];
+                echo "<a href='album.php?id=" . $row[0] . "'><img src=" . $row[3] . " alt=" . $row[1] . " class='cover-top'>";
+                echo "<a class='card-title waves-effect waves-light'>$i</a></a>";
+                $i++;
                 ?>
             </div>
-          <div class="bottom col s12 center z-depth-1">
+          </div>
+          <div class="card-content col s12 m5 offset-m1">
+              <?php
+              echo "<h2 class='underline-animation'><a href='wykonawca.php?id=" . $row[9] . "'>$row[4]</a> \"$row[1]\"</h2><h4>$row[5], $row[2]</h4><br>";
+              echo $row[6];
+              ?>
+          </div>
+
+          <div class="bottom col s12 center">
+            <div class="divider"></div>
             <p>
                 <?php
-                if($row[7] === null) {
-                 echo 'brak';
-                 } else {
-                echo $row[7] ?>/5<br>
-                <?php
-                echo $row[8]; } ?> głosów </p>
+                if ($row[7] === null) {
+                    echo 'brak';
+                } else {
+                    echo $row[7] ?>/5<br>
+                    <?php
+                    echo $row[8];
+                } ?> głosów </p>
           </div>
-          </div>
-            <?php
-        } ?>
+        </div>
+          <?php
+      } ?>
 
-    </div>
   </div>
-    <?php
-    include('footer.php');
-    ?>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-            crossorigin="anonymous"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</div>
+<?php
+include('footer.php');
+?>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    <script>
-      $('.dropdown-trigger').dropdown();
+<script>
+  $('.dropdown-trigger').dropdown();
 
-    document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.dropdown-trigger');
-      var instances = M.Dropdown.init(elems, 0);
-    });
-  </script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, 0);
+  });
+</script>
 
 </body>
 </html>

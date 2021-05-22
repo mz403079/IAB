@@ -42,7 +42,8 @@ if (isset($_POST['remove'])) {
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Album Wykonawcy</title>
@@ -54,7 +55,6 @@ if (isset($_POST['remove'])) {
   include('navigation.php');
   ?>
   <?php
-
 
   $query = "SELECT album.nazwa, gatunek.nazwa, album.id_albumu
             FROM gatunek_album
@@ -111,9 +111,11 @@ if (isset($_POST['remove'])) {
           <h1> <?php echo $album[1]; ?>
               <?php if ($is_logged != 0) { ?>
                   <?php if ($added_fav) { ?>
-                  <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite"><i class="material-icons">remove</i></a>
+                  <a class="btn-floating btn-large orange waves-effect waves-light remove_favourite"><i
+                        class="material-icons">remove</i></a>
                   <?php } else { ?>
-                  <a class="btn-floating btn-large orange waves-effect waves-light add_favourite"><i class="material-icons">add</i></a>
+                  <a class="btn-floating btn-large orange waves-effect waves-light add_favourite"><i
+                        class="material-icons">add</i></a>
                   <?php }
               } else { ?>
                 <div class="tooltip">

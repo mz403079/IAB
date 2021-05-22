@@ -5,7 +5,8 @@
     <title>Rejestracja</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
@@ -16,31 +17,31 @@
   <div class="container row">
     <div class="wrapper col s12 m6 offset-m3 l4 offset-l4">
 
-    <form method="post" action="register.php" id="login">
-      <h4>Zarejestruj konto</h4>
-      <div class="input-group">
-        <label>Login</label>
-        <input type="text" name="username" value="<?php echo $username; ?>">
-      </div>
-      <div class="input-group">
-        <label>Email</label>
-        <input type="email" name="email" value="<?php echo $email; ?>">
-      </div>
-      <div class="input-group">
-        <label>Hasło</label>
-        <input type="password" name="password_1">
-      </div>
-      <div class="input-group">
-        <label>Potwierdź hasło</label>
-        <input type="password" name="password_2">
-      </div>
-      <div class="input-group">
-        <button type="submit" class="btn waves-effect orange" name="reg_user">Zarejestruj</button>
-      </div>
-      <p>
-        Masz już konto? <a class="orange-text" href="login.php">Zaloguj</a>
-      </p>
-    </form>
+      <form method="post" action="register.php" id="login">
+        <h4>Zarejestruj konto</h4>
+        <div class="input-group">
+          <label>Login</label>
+          <input type="text" name="username" value="<?php echo $username; ?>">
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" name="email" value="<?php echo $email; ?>">
+        </div>
+        <div class="input-group">
+          <label>Hasło</label>
+          <input type="password" name="password_1">
+        </div>
+        <div class="input-group">
+          <label>Potwierdź hasło</label>
+          <input type="password" name="password_2">
+        </div>
+        <div class="input-group">
+          <button type="submit" class="btn waves-effect orange" name="reg_user">Zarejestruj</button>
+        </div>
+        <p>
+          Masz już konto? <a class="orange-text" href="login.php">Zaloguj</a>
+        </p>
+      </form>
     </div>
   </div>
   <?php

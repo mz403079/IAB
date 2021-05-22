@@ -13,13 +13,13 @@ body {
 }
 html {
   position: relative;
-  min-height: 100%;
+  min-height: 105%;
 }
 
 body {
   margin: 0 0 100px; /* bottom = footer height */
 }
-.page-footer{
+.page-footer {
   background-color: orange;
   left: 0;
   bottom: 0;
@@ -277,6 +277,11 @@ h2, h4 {
 .album-info{
   padding-left:10px;
 }
+.album-info-search{
+  padding: 0 10px 0;
+
+
+}
 .add_favourite, .remove_favourite {
   background-color: orange;
   font-size: 45px;
@@ -294,12 +299,25 @@ h2, h4 {
   background-color: black;
 }
 
-.profil-album {
-  height: 700px;
+
+@media only screen and (min-width: 768px)  {
+  .profil-album {
+    height: 420px;
+    margin-bottom: 60px;
+  }
 }
+@media only screen and (min-width: 1024px) {
+  .profil-album {
+    height: 450px;
+    margin: 0 55px 70px;
+  }
+}
+
 
 .box {
   padding-top: 40px;
+  padding-right: 40px;
+  padding-left: 40px;
   border-radius: 20px;
   margin-bottom: 170px;
 }
@@ -317,7 +335,7 @@ h2, h4 {
   border-radius: 5px;
 }
 
-#insertMovie div input:focus, #login div input:focus, #kape:focus {
+#insertMovie div input:focus, #login div input:focus, #kape:focus,#insertMovie div #textarea1:focus {
   border-bottom: 1px solid orange;
   box-shadow: 0 1px 0 0 orange;
 }

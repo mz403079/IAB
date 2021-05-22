@@ -1,13 +1,14 @@
 <?php include('check.php');
-  if($is_logged != 2)
-      header('location: index.php');
+if ($is_logged != 2)
+    header('location: index.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Admin Panel</title>
   <link rel="stylesheet" type="text/css" href="style.css">
-  <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--  <link-->
   <!--      href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/4.0.0/material-components-web.min.css"-->
@@ -79,6 +80,7 @@ if (isset($_POST['removeId'])) {
         $album_id = $_POST['removeId'];
         $query = "DELETE FROM album WHERE id_albumu = $album_id";
         pg_query($db, $query);
+        header('location: admin-panel.php');
     }
 }
 ?>
